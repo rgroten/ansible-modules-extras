@@ -125,6 +125,9 @@ EXAMPLES = '''
     disk_lunid: "3600..."
 '''
 
+RETURN='''
+'''
+
 from ovirtsdk.api import API
 from ovirtsdk.xml import params
 
