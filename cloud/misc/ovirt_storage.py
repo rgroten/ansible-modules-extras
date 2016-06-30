@@ -75,7 +75,7 @@ options:
     disk_activate:
         description:
             - If C(yes), disk will be activated when created or attached to a VM.
-            - If C(no), disk will be attached but not activated. 
+            - If C(no), disk will be attached but not activated.
             - Used when C(state) is C(present) or C(attached).
         default: True
         type: bool
@@ -125,11 +125,16 @@ EXAMPLES = '''
     disk_lunid: "3600..."
 '''
 
-RETURN='''
+RETURN = '''
 '''
 
-from ovirtsdk.api import API
-from ovirtsdk.xml import params
+try:
+    from ovirtsdk.api import API
+    from ovirtsdk.xml import params
+    HAS_OVIRTSDK = True
+except ImportError:
+    HAS_OVIRTSDK = False
+
 
 def _activate(disk):
     """
@@ -142,7 +147,7 @@ def _activate(disk):
     """
     try:
         if disk.get_active():
-            # Disk is already active 
+            # Disk is already active
             return 0
         else:
             if not MODULE_CHECK_MODE:
@@ -190,7 +195,7 @@ def _attach(vm, disk, activate):
             return _activate(vm_disk)
     else:
         if not MODULE_CHECK_MODE:
-            vm_disk = vm.disks.add(params.Disk(id = disk.id, active = activate))
+            vm_disk = vm.disks.add(params.Disk(id=disk.id, active=activate))
         return 1
     return 0
 
@@ -260,7 +265,6 @@ def create_disk(api, vm_name, disk_alias, disk_size_gb, disk_alloc, disk_iface):
             size = int(disk_size_gb) * 1024 * 1024 * 1024
             disk_params = params.Disk()
             disk_params.set_wipe_after_delete(True)
-            #disk_params.set_sparse(False)
             disk_params.set_active(True)
             disk_params.set_alias(disk_alias)
             disk_params.set_size(size)
@@ -309,7 +313,7 @@ def create_lun(api, vm_name, disk_alias, lun_id):
 
 def delete_disk(api, disk_alias, vm_name=None, assume_yes=True):
     """
-    Permanently delete disk_alias from RHEV. Expects disk to be detached 
+    Permanently delete disk_alias from RHEV. Expects disk to be detached
     already. Unless -y is specified in command line, prompt user to confirm
     before deleting.
     """
@@ -357,7 +361,7 @@ def main():
             disk_lunid = dict(aliases=['disk_wwid'])
         ),
         supports_check_mode = True
-    ) 
+    )
 
     state         = module.params['state']
     ovirt_user    = module.params['user']
@@ -375,10 +379,13 @@ def main():
     MODULE_CHECK_MODE = module.check_mode
     ret = 0
 
+    if not HAS_OVIRTSDK:
+        module.fail_json("ovirtsdk library is required for this module")
+
     try:
         api = ovirtConnect(ovirt_url, ovirt_user, ovirt_pw)
     except Exception as e:
-        module.fail_json(msg='%s' %e)
+        module.fail_json(msg=e)
 
     try:
         if state == 'attached':
@@ -410,7 +417,7 @@ def main():
         else:
             raise Exception("Unsupported operation %s" % state)
     except Exception as e:
-        module.fail_json(msg='%s' %e)
+        module.fail_json(msg=e)
     finally:
         if api:
             api.disconnect()
