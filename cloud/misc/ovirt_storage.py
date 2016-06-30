@@ -374,7 +374,7 @@ def main():
 
     try:
         api = ovirtConnect(ovirt_url, ovirt_user, ovirt_pw)
-    except Exception, e:
+    except Exception as e:
         module.fail_json(msg='%s' %e)
 
     try:
@@ -406,7 +406,7 @@ def main():
             msg = "Deleted disk %s from %s" % (disk_alias, vm_name)
         else:
             raise Exception("Unsupported operation %s" % state)
-    except Exception, e:
+    except Exception as e:
         module.fail_json(msg='%s' %e)
     finally:
         if api:
