@@ -46,7 +46,7 @@ options:
         required: true
     url:
         description:
-            - URL to oVirt API (U(https://<ovirt-engine>/api)).
+            - URL to oVirt API (U(https://<ovirt-engine>/ovirt-engine/api)).
         required: true
     vm_name:
         description:
@@ -87,14 +87,14 @@ EXAMPLES = '''
     vm_name: vm.example.com
     disk_alias: disk1
     disk_size_gb: 5
-    url: "https://ovirt-manager.example.com/api"
+    url: "https://ovirt-manager.example.com/ovirt-engine/api"
     user: admin@internal
     password: adminpw
 # Attach an existing disk to a VM but don't activate it
 - action: ovirt_storage:
     vm_name: vm.example.com
     disk_alias: disk1
-    url: "https://ovirt-manager.example.com/api"
+    url: "https://ovirt-manager.example.com/ovirt-engine/api"
     user: admin@internal
     password: adminpw
     state: attached
@@ -103,7 +103,7 @@ EXAMPLES = '''
 - action: ovirt_storage:
     vm_name: vm.example.com
     disk_alias: disk1
-    url: "https://ovirt-manager.example.com/api"
+    url: "https://ovirt-manager.example.com/ovirt-engine/api"
     user: admin@internal
     password: adminpw
     state: detached
@@ -111,7 +111,7 @@ EXAMPLES = '''
 - action: ovirt_storage:
     vm_name: vm.example.com
     disk_alias: disk1
-    url: "https://ovirt-manager.example.com/api"
+    url: "https://ovirt-manager.example.com/ovirt-engine/api"
     user: admin@internal
     password: adminpw
     state: absent
@@ -119,7 +119,7 @@ EXAMPLES = '''
 - action: ovirt_storage:
     vm_name: vm.example.com
     disk_alias: disk1
-    url: "https://ovirt-manager.example.com/api"
+    url: "https://ovirt-manager.example.com/ovirt-engine/api"
     user: admin@internal
     password: adminpw
     disk_lunid: "3600..."
