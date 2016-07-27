@@ -23,7 +23,7 @@ module: ovirt_storage
 author: "Ryan Groten (@rgroten)"
 short_description: "Create/Delete/Manage VM Disks in oVirt/RHEV"
 description:
-    - Module for managing disks in oVirt/RHEV. Provides the ability to create, attach/detach, or delete both internal (pool) disks to VMs.
+    - Module for managing disks in oVirt/RHEV. Provides the ability to create, attach/detach, or delete disks from VMs.
 version_added: "2.2"
 requirements:
     - "ovirt-engine-python-sdk"
@@ -82,7 +82,7 @@ options:
 '''
 
 EXAMPLES = '''
-# Create a new 5GB Pool Disk and attach/activate it to a VM
+# Create a new 5GB Image and attach/activate it to a VM
 - action: ovirt_storage:
     vm_name: vm.example.com
     disk_alias: disk1
