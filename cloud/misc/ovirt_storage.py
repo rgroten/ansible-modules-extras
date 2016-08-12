@@ -269,6 +269,8 @@ def create_disk(api, vm_name, disk_alias, disk_size_gb, disk_alloc, disk_iface):
             disk_params.set_alias(disk_alias)
             disk_params.set_provisioned_size(size)
             disk_params.set_interface(disk_iface)
+            if disk_alloc == "raw":
+                disk_params.set_sparse(False)
             disk_params.set_format(disk_alloc)
             disk = vm.disks.add(disk_params)
             # TODO: Use VMDisk.get_creation_status to wait until disk creation completes
